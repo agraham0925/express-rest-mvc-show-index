@@ -5,6 +5,10 @@ const app = express();
 // note the syntax for requiring file -- must start w/ "./"
 const fruits = require('./models/fruits.js')
 
+
+/// these are all our ROUTES
+
+
 // ****index*** route - this will list all the fruits
 app.get('/fruits', (req, res) => {
 
@@ -14,6 +18,13 @@ app.get('/fruits', (req, res) => {
 		pageTitle: "FRUITS INDEX"
 	})
 
+})
+
+// ** new route **
+// this route will show a template for the user to add fruits
+// we put it here to avoid /fruits/:id hijacking it
+app.get('/fruits/new', (req, res) => {
+	res.render('new.ejs')	 // we are rendering a template
 })
 
 // ** show ** route -- show all info about one particular fruit
@@ -34,6 +45,14 @@ app.get('/fruits/:id', (req, res) => {
 	})
 
 })
+
+app.post('/fruits', (req, res) => {
+	console.log(req)
+	res.send("you hit the post route");
+})
+
+
+
 
 app.listen(3000, () => {
 	console.log("Server listening on port 3000");
