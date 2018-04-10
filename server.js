@@ -1,9 +1,25 @@
 const express = require('express'); // note syntax for module (no . or /)
 const app = express();
+const bodyParser = require('body-parser')
 
 // our data
 // note the syntax for requiring file -- must start w/ "./"
 const fruits = require('./models/fruits.js')
+
+
+
+// MIDDLEWARE -- put this above routes/controllers
+// you app.use middleware
+// include some code to do a thing
+// next will continue on to the route
+app.use((req, res, next) => {
+	console.log("I am middleware and will be run for all routes. Thanks for stopping by!")	
+	next();
+})
+// we are USING the body-parser middleware
+// it is a module that will let us see the form data in our POST requests
+app.use(bodyParser.urlencoded({extended: false}))
+
 
 
 /// these are all our ROUTES
@@ -47,8 +63,23 @@ app.get('/fruits/:id', (req, res) => {
 })
 
 app.post('/fruits', (req, res) => {
-	console.log(req)
-	res.send("you hit the post route");
+	// now that we have body-parser the data is available to us in req.body
+	console.log(req.body)	
+
+
+	// add a a new object to our fruits array
+	const newFruit = {
+		name: req.body.name,
+		color: req.body.color,
+		readyToEat: req.body.readyToEat == "on" ? true : false
+	}
+	// if(req.body.readyToEat == "on") {
+	// 	newFruit.readyToEat = true;
+	// } else newFruit.readyToEat = false;
+
+	fruits.push(newFruit)
+	// you can redirect the user in lieu of res.render or res.send
+	res.redirect('/fruits')
 })
 
 
