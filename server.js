@@ -20,6 +20,9 @@ app.use((req, res, next) => {
 // it is a module that will let us see the form data in our POST requests
 app.use(bodyParser.urlencoded({extended: false}))
 
+// this will let us include static assets (images/css/less/etc)
+app.use(express.static('public'))
+
 
 
 /// these are all our ROUTES
